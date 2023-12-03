@@ -1,6 +1,6 @@
 # A better way to interact with nbt in jmc.
 ## Usage
-```ts
+```js
 Nbt.remove("amandin:main array[0]");
 // data remove storage amandin:main array[0]
 
@@ -20,4 +20,4 @@ it should make sense to you after looking at these examples, if it doesnt you ca
 - drop the file in your project folder
 - import the file with `import "path/to/the/file";`
 
-## good luck and enjoy.
+### good luck, and enjoy.
