@@ -16,7 +16,7 @@ Nbt.modify('0 0 0 Items set from @s Inventory');
 it should make sense to you after looking at these examples, if it doesnt you can always look at the source code.
 
 ## Installation
-- download the latest release
+- download the `nbt-api.jmc` file 
 - drop the file in your project folder
 - import the file with `import "path/to/the/file";`
 
