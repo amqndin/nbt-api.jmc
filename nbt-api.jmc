@@ -1,0 +1,123 @@
+
+JMC.python(`
+def split_into_words(input_string):
+    words, word, inside = [], '', ''
+    for c in input_string:
+        if not inside:
+            if c == ' ':
+                if word: words.append(word); word = ''
+            elif c in ['[', '{', '(', '\\'', '"', '@']:
+                if word: words.append(word)
+                word, inside = c, c if c != '@' else ' '
+            else: word += c
+        else:
+            if (c == ']' and inside == '[') or (c == '}' and inside == '{') or (c == ')' and inside == '(') or (c == inside and inside in ['\\'', '"', ' ']):
+                word += c
+                if c == inside:
+                    words.append(word); word, inside = '', ''
+            else: word += c
+    if word: words.append(word)
+    return words
+
+def nbt_get(syntax):
+    words = split_into_words(syntax)
+    source_type, source, words = get_source_type_and_source(words)
+    path = words.pop(0) if words else ""
+    emit(f'data get {source_type} {source} {path}')
+
+
+def nbt_merge(syntax):
+    words = split_into_words(syntax)
+    source_type, source, words = get_source_type_and_source(words)
+    nbt_data = words.pop(0) if words else ""
+    emit(f'data merge {source_type} {source} {nbt_data}')
+
+def nbt_modify(syntax):
+    words = split_into_words(syntax)
+    source_type, source, words = get_source_type_and_source(words)
+    path = words.pop(0)
+    index = ""
+    start = ""
+    end = ""
+
+    actions = {
+        "set from": {"action": "set from", "del_words": 2},
+        "set string": {"action": "set string", "del_words": 2},
+        "set": {"action": "set value", "del_words": 1},
+        "append from": {"action": "append from", "del_words": 2},
+        "append string": {"action": "append string", "del_words": 2},
+        "append": {"action": "append value", "del_words": 1},
+        "prepend from": {"action": "prepend from", "del_words": 2},
+        "prepend string": {"action": "prepend string", "del_words": 2},
+        "prepend": {"action": "prepend value", "del_words": 1},
+        "insert from": {"action": "insert from", "del_words": 3},
+        "insert string": {"action": "insert string", "del_words": 3},
+        "insert": {"action": "insert value", "del_words": 2},
+        "merge": {"action": "merge value", "del_words": 1},
+        "merge from": {"action": "merge from", "del_words": 2},
+        "merge string": {"action": "merge string", "del_words": 2}
+    }
+
+    for key in actions:
+        if key in syntax:
+            action = actions[key]["action"]
+            del words[:actions[key]["del_words"]]
+            if "insert" in key:
+                index = words.pop(0)
+            break
+
+    second_source_type = ""
+    second_source = ""
+    second_path = ""
+    if words and action not in ["set value", "append value", "prepend value", "insert value", "merge value"]:
+        second_source_type, second_source, words = get_source_type_and_source(words)
+        if words:
+            second_path = words.pop(0)
+
+    if action in ["set string", "append string", "prepend string", "insert string", "merge string"] and words:
+        start = words.pop(0)
+        end = words.pop(0)
+
+    value = ""
+    if action in ["set value", "append value", "prepend value", "insert value", "merge value"] and words:
+        value = words.pop(0)
+        value += " "
+
+    emit(f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}')
+
+def nbt_remove(syntax):
+    words = split_into_words(syntax)
+    source_type, source, words = get_source_type_and_source(words)
+    path = words.pop(0) if words else ""
+    emit(f'data remove {source_type} {source} {path}')
+
+`, "amandin:nbt_api");
+
+
+class Nbt {
+    @lazy
+    function get(syntax) {
+        JMC.python(`
+nbt_get('$syntax')
+`, "amandin:nbt_api");
+    }
+    @lazy
+    function merge(syntax) {
+        JMC.python(`
+nbt_merge('$syntax')
+`, "amandin:nbt_api");
+    }
+    @lazy
+    function modify(syntax) {
+        JMC.python(`
+nbt_modify('$syntax')
+`, "amandin:nbt_api");
+    }
+    @lazy
+    function remove(syntax) {
+        JMC.python(`
+nbt_remove('$syntax')
+`, "amandin:nbt_api");
+    }
+}
+
