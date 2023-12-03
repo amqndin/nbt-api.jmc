@@ -13,7 +13,7 @@ Nbt.merge('@s {NoGravity:1b, Invulnerable:1b}');
 Nbt.modify('0 0 0 Items set from @s Inventory');
 // data modify block 0 0 0 Items set from entity @s Inventory
 ```
-it should make sense to you after looking at these examples, if it doesnt you can always look at the source code.
+it should make sense to you after looking at these examples, if it doesnt you can always look at the source code. It can pretty much generate any `/data` command possible even the `/data modify ... string` command.
 
 ## Installation
 - download the `nbt-api.jmc` file 
