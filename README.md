@@ -18,6 +18,6 @@ it should make sense to you after looking at these examples, if it doesnt you ca
 ## Installation
 - download the `nbt-api.jmc` file 
 - drop the file in your project folder
-- import the file with `import "path/to/the/file";`
+- import the file with `import "path/to/nbt-api";`
 
 ### good luck, and enjoy.
