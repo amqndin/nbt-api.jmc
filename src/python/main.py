@@ -37,13 +37,13 @@ class nbt:
 
 
     def merge(syntax):
-        words =nbt.split_into_words(syntax)
+        words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         nbt_data = words.pop(0) if words else ""
         print(f'data merge {source_type} {source} {nbt_data}')
 
     def modify(syntax):
-        words =nbt.split_into_words(syntax)
+        words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0)
 
@@ -98,7 +98,7 @@ class nbt:
         print(f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}')
 
     def remove(syntax):
-        words =nbt.split_into_words(syntax)
+        words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
         print(f'data remove {source_type} {source} {path}')

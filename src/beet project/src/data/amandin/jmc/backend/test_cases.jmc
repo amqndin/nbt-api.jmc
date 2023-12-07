@@ -1,3 +1,11 @@
+import "../nbt-api";
+TextProps.nbt(
+    propertyName= "main_storage",
+    indexString= "index",
+    type= storage,
+    source= 'main',
+    path= index
+);
 function test_cases() {
     Nbt.get("~ ~ ~ Items"); 
     // data get block ~ ~ ~ Items
@@ -35,6 +43,12 @@ function test_cases() {
     Nbt.remove('0 0 0 Items[1]');
     // data remove block 0 0 0 Items[1]
 
-    Nbt.shiftArray('main path.to.array');
-    // 
+    // for now you cant assign variable to Nbt.get() due to bug in jmc itself
+    $len = data get storage main path.to.array; 
+
+    // this is going to iterate through an array and print out each element individually
+    for ($i = 0; $i < $len; $i++) {
+        printf("&<main_storage(path.to.array[0])>");
+        Nbt.shiftArray('main path.to.array');
+    }
 }
