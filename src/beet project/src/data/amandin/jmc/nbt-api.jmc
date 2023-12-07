@@ -35,14 +35,14 @@ class nbt:
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        emit(f'data get {source_type} {source} {path}')
+        return f'data get {source_type} {source} {path}'
 
 
     def merge(syntax):
         words =nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         nbt_data = words.pop(0) if words else ""
-        emit(f'data merge {source_type} {source} {nbt_data}')
+        return f'data merge {source_type} {source} {nbt_data}'
 
     def modify(syntax):
         words =nbt.split_into_words(syntax)
@@ -97,13 +97,21 @@ class nbt:
             value = words.pop(0)
             value += " "
 
-        emit(f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}')
+        return f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}'
 
     def remove(syntax):
         words =nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        emit(f'data remove {source_type} {source} {path}')
+        return f'data remove {source_type} {source} {path}'
+
+    def shift_array(syntax):
+        words = nbt.split_into_words(syntax)
+        source_type, source, words = nbt.get_source_type_and_source(words)
+        path = words.pop(0) if words else ""
+        return f'''
+data modify {source_type} {source} {path} append from {source_type} {source} {path}[0]
+data remove {source_type} {source} {path}[0]'''
 
 `, "amandin:nbt_api");
 
@@ -112,32 +120,32 @@ class Nbt {
     @lazy
     function get(syntax) {
         JMC.python(`
-nbt.get('$syntax')
+emit(nbt.get('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy
     function merge(syntax) {
         JMC.python(`
-nbt.merge('$syntax')
+emit(nbt.merge('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy
     function modify(syntax) {
         JMC.python(`
-nbt.modify('$syntax')
+emit(nbt.modify('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy
     function remove(syntax) {
         JMC.python(`
-nbt.remove('$syntax')
+emit(nbt.remove('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy 
-    function forEach(syntax) {
+    function shiftArray(syntax) {
         JMC.python(`
-nbt.for_each('$syntax')
-`, "amandin:nbt_api")
+emit(nbt.shift_array('$syntax'))
+`, "amandin:nbt_api");
     }
 }
 
