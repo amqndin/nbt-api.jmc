@@ -1,5 +1,5 @@
 # A better way to interact with nbt in jmc.
-## Usage
+## Usage example
 ```js
 Nbt.remove("amandin:main array[0]");
 // data remove storage amandin:main array[0]
