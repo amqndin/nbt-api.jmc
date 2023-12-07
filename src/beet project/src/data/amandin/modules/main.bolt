@@ -1,0 +1,13 @@
+# function_tag minecraft:tick {"values":["code:tick"],"replace":false}
+# function_tag minecraft:load {"values":["code:load"],"replace":false}
+#> DONT DO THIS ^^^^^^^^
+#> instead of the above ^^^ 
+# you can run load and tick from jmc files, or vice versa!!
+
+function bolt:load:
+    tellraw @a "§aDatapack loaded successfully"
+
+
+function bolt:tick:
+    pass
+

@@ -1,0 +1,18 @@
+output: build
+require:
+    - jmc-beet
+    - bolt
+
+data_pack:
+    load: [src]
+    name: datapack
+
+pipeline:
+    - mecha
+
+meta:
+    jmc:
+        namespace: jmc
+        file: src/data/amandin/jmc/main.jmc
+    bolt:
+        entrypoint: amandin:main

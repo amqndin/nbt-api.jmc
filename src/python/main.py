@@ -1,5 +1,3 @@
-
-JMC.python(`
 class nbt:
     def split_into_words(input_string):
         brackets = {
@@ -35,14 +33,14 @@ class nbt:
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        emit(f'data get {source_type} {source} {path}')
+        print(f'data get {source_type} {source} {path}')
 
 
     def merge(syntax):
         words =nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         nbt_data = words.pop(0) if words else ""
-        emit(f'data merge {source_type} {source} {nbt_data}')
+        print(f'data merge {source_type} {source} {nbt_data}')
 
     def modify(syntax):
         words =nbt.split_into_words(syntax)
@@ -97,48 +95,11 @@ class nbt:
             value = words.pop(0)
             value += " "
 
-        emit(f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}')
+        print(f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}')
 
     def remove(syntax):
         words =nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        emit(f'data remove {source_type} {source} {path}')
-
-`, "amandin:nbt_api");
-
-
-class Nbt {
-    @lazy
-    function get(syntax) {
-        JMC.python(`
-nbt.get('$syntax')
-`, "amandin:nbt_api");
-    }
-    @lazy
-    function merge(syntax) {
-        JMC.python(`
-nbt.merge('$syntax')
-`, "amandin:nbt_api");
-    }
-    @lazy
-    function modify(syntax) {
-        JMC.python(`
-nbt.modify('$syntax')
-`, "amandin:nbt_api");
-    }
-    @lazy
-    function remove(syntax) {
-        JMC.python(`
-nbt.remove('$syntax')
-`, "amandin:nbt_api");
-    }
-    @lazy 
-    function forEach(syntax) {
-        JMC.python(`
-nbt.for_each('$syntax')
-`, "amandin:nbt_api")
-    }
-}
-
+        print(f'data remove {source_type} {source} {path}')
 
