@@ -1,4 +1,4 @@
-from main import *
+from python.main import *
 
 correct = [
     'data get block ~ ~ ~ Items',
