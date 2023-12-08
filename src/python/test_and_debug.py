@@ -10,9 +10,8 @@ data modify {source_type} {source} {path} append from {source_type} {source} {pa
 data remove {source_type} {source} {path}[0]'''
 nbt = test
 
-'''
-Nbt.shiftArray('main path.array')
-'''
-
-print(nbt.shift_array("@e[type=zombie, limit=1] path.array"))
+if test_all() == True:
+    print('all tests passed succesfully!')
+else:
+    print(f'\nONE OF THE TESTS FAILED!\n{test_all()}')
 
