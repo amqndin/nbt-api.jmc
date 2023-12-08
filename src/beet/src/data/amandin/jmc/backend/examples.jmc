@@ -6,7 +6,7 @@ TextProps.nbt(
     source= 'main',
     path= index
 );
-function test_cases() {
+function examples() {
     Nbt.get("~ ~ ~ Items"); 
     // data get block ~ ~ ~ Items
 

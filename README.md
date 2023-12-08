@@ -25,8 +25,8 @@ Functions for managing nbt data
 
 
 
-### not enough to understand? 
-look at `src/beet project/src/data/amandin/jmc/backend/test_cases` in the repo, it should include every syntax.
+### Not enough to understand? 
+look at `src/beet project/src/data/amandin/jmc/backend/examples` in the repo, it should include every syntax.
 
 ## Installation
 - download the `nbt-api.jmc` file 
