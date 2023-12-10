@@ -2,7 +2,7 @@
 
 generate _any_ `/data` command with a fancy syntax.
 
-you can skip to [install](#install-install) too.
+you can skip to [install](#install) too.
 
 ## Syntax
 
@@ -50,7 +50,7 @@ for ($i = 0; $i < $array_len; $i++) {
 
 might also wanna check this out `src/beet project/src/data/amandin/jmc/backend/examples` in the repo, it should include every syntax.
 
-## Install {#install}
+## Install
 
 -   download the `nbt-api.jmc` file
 -   drop the file in your project folder
