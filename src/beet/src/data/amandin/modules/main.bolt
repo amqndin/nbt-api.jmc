@@ -11,3 +11,11 @@ function bolt:load:
 function bolt:tick:
     pass
 
+
+# def spawn_chicken(amount):
+#     for i in range(amount):
+#         summon chicken ~ ~ ~i 
+
+# function namespace:test_func:
+#     spawn_chicken(100)
+
