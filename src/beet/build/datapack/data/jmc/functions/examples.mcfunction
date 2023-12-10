@@ -10,6 +10,7 @@ data remove storage main some.array[0]
 data merge block 0 0 0 {Items: [{Slot: 0b, id: "minecraft:stone", Count: 1b}]}
 data modify storage main array[{somefilter: 1b}][0].tag.array[-1][0] set value 1b
 data remove block 0 0 0 Items[1]
+data get entity f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count
 execute store result score $len __variable__ run data get storage main path.to.array
 scoreboard players set $i __variable__ 0
 execute if score $i __variable__ < $len __variable__ run function jmc:__private__/for_loop/0

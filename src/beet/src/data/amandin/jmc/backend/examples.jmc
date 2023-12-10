@@ -1,37 +1,39 @@
 import "../nbt-api";
 TextProps.nbt(
-    propertyName= "main_storage",
-    indexString= "index",
-    type= storage,
-    source= 'main',
-    path= index
+    propertyName = "main_storage",
+    indexString = "index",
+    type = storage,
+    source = "main",
+    path = index
 );
 function examples() {
-    Nbt.get("~ ~ ~ Items"); 
+    Nbt.get("~ ~ ~ Items");
     // data get block ~ ~ ~ Items
 
-    Nbt.merge("@s {NoAI:1b, Invulnerable:1b}"); 
+    Nbt.merge("@s {NoAI:1b, Invulnerable:1b}");
     // data merge entity @s {NoAI:1b, Invulnerable:1b}
 
-    Nbt.modify("main some.tag set 1b"); 
+    Nbt.modify("main some.tag set 1b");
     // data modify storage main some.tag set value 1b
 
-    Nbt.modify("main some.tag.array append 1b"); 
+    Nbt.modify("main some.tag.array append 1b");
     // data modify storage main some.tag.array append value 1b
 
     Nbt.modify("main array append from temp tempArray[0]");
     // data modify storage main array append from storage temp array[0]
 
-    Nbt.modify("main some.path set from @s[type=player, tag=!this] SelectedItem.tag.pages");
+    Nbt.modify(
+        "main some.path set from @s[type=player, tag=!this] SelectedItem.tag.pages"
+    );
     // data modify storage main some.path set from entity @s[type=player, tag=!this] SelectedItem.tag.pages
 
-    Nbt.modify('main some.string set string 0 0 0 Items[0] 0 1');
+    Nbt.modify("main some.string set string 0 0 0 Items[0] 0 1");
     // data modify storage main some.string set string block 0 0 0 Items[0] 0 1
 
-    Nbt.modify('main some.string append string main storage.path 0 1');
+    Nbt.modify("main some.string append string main storage.path 0 1");
     // data modify storage main some.string append string storage main storage.path 0 1
 
-    Nbt.remove('main some.array[0]');
+    Nbt.remove("main some.array[0]");
     // data remove storage main some.array[0]
 
     Nbt.merge('0 0 0 {Items:[{Slot:0b,id:"minecraft:stone",Count:1b}]}');
@@ -40,15 +42,18 @@ function examples() {
     Nbt.modify('main array[{"somefilter":1b}][0].tag.array[-1][0] set 1b');
     // data modify storage main array[{"somefilter":1b}][0].tag.array[-1][0] set value 1b
 
-    Nbt.remove('0 0 0 Items[1]');
+    Nbt.remove("0 0 0 Items[1]");
     // data remove block 0 0 0 Items[1]
 
-    // for now you cant assign variable to Nbt.get() due to bug in jmc itself
-    $len = data get storage main path.to.array; 
+    Nbt.get("f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count");
+    // data get entity f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count
+
+    // get length of an array
+    $len = Nbt.get("main path.to.array");
 
     // this is going to iterate through an array and print out each element individually
     for ($i = 0; $i < $len; $i++) {
         printf("&<main_storage(path.to.array[0])>");
-        Nbt.shiftArray('main path.to.array');
+        Nbt.shiftArray("main path.to.array");
     }
 }

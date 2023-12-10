@@ -24,12 +24,17 @@ class nbt:
         if word:
             words.append(word)
         return words
-
+    '''
+    bool function whether string is uuid
+    '''
+    def is_uuid(string):
+        parts = string.split('-')
+        return len(parts) == 5 and all(len(part) in (8, 4, 4, 4, 12) and part.isalnum() for part in parts)
     '''
     analyze first argumentand determine source type
     '''
     def get_source_type_and_source(words):
-        if words[0].startswith("@"):
+        if words[0].startswith("@") or nbt.is_uuid(words[0]):
             source_type = "entity"
         elif words[0][0] in "~^" or words[0].isnumeric() or words[0].isnumeric():
             source_type = "block"

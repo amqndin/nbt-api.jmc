@@ -14,7 +14,8 @@ correct = [
     'data merge block 0 0 0 {Items:[{Slot:0b,id:"minecraft:stone",Count:1b}]}',
     'data modify storage main array[{"somefilter":1b}][0].tag.array[-1][0] set value 1b',
     'data remove block 0 0 0 Items[1]',
-    'data modify storage main path.to.array append from storage main path.to.array[0]\r\ndata remove storage main path.to.array[0]'
+    'data modify storage main path.to.array append from storage main path.to.array[0]\r\ndata remove storage main path.to.array[0]',
+    'data get entity f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count'
 ]
 
 def test_all():
@@ -34,7 +35,8 @@ def test_all():
         nbt.merge('0 0 0 {Items:[{Slot:0b,id:"minecraft:stone",Count:1b}]}'),
         nbt.modify('main array[{"somefilter":1b}][0].tag.array[-1][0] set 1b'),
         nbt.remove('0 0 0 Items[1]'),
-        nbt.shift_array('main path.to.array')
+        nbt.shift_array('main path.to.array'),
+        nbt.get('f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count')
     ]
     for test, command in zip(test_result, correct):
         index = test_result.index(test)+1
