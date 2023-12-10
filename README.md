@@ -33,9 +33,8 @@ Functions for managing nbt data
 ```js
 // replace `data` commands with fancy syntax
 Nbt.modify('main some.path set from @s SelectedItem.Count');
-
+Nbt.modify('@s teleport_duration set 1');
 Nbt.remove('~ ~1 ~ Items[0]');
-
 Nbt.merge('@s {Invulnerable:1b, Silent:1b, NoGravity:1b}');
 
 // assign variables to NBT values
