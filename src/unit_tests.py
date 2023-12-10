@@ -14,7 +14,7 @@ correct = [
     'data merge block 0 0 0 {Items:[{Slot:0b,id:"minecraft:stone",Count:1b}]}',
     'data modify storage main array[{"somefilter":1b}][0].tag.array[-1][0] set value 1b',
     'data remove block 0 0 0 Items[1]',
-    'data modify storage main path.to.array append from storage main path.to.array[0]\ndata remove storage main path.to.array[0]'
+    'data modify storage main path.to.array append from storage main path.to.array[0]\r\ndata remove storage main path.to.array[0]'
 ]
 
 def test_all():
