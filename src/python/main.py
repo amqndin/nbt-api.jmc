@@ -48,13 +48,13 @@ class nbt:
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        return f'data get {source_type} {source} {path}'
+        return f'''data get {source_type} {source} {path}'''
 
     def merge(syntax):
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         nbt_data = words.pop(0) if words else ""
-        return f'data merge {source_type} {source} {nbt_data}'
+        return f'''data merge {source_type} {source} {nbt_data}'''
 
     def modify(syntax):
         words = nbt.split_into_words(syntax)
@@ -109,19 +109,17 @@ class nbt:
             value = words.pop(0)
             value += " "
 
-        return f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}'.strip()
+        return f'''data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}'''.strip()
 
     def remove(syntax):
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        return f'data remove {source_type} {source} {path}'
+        return f'''data remove {source_type} {source} {path}'''
 
     def shift_array(syntax):
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        return f'data modify {source_type} {source} {path} append from {source_type} {source} {path}[0]\ndata remove {source_type} {source} {path}[0]'
-        
-
+        return f'''data modify {source_type} {source} {path} append from {source_type} {source} {path}[0]\ndata remove {source_type} {source} {path}[0]'''
 
