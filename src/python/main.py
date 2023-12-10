@@ -24,12 +24,14 @@ class nbt:
         if word:
             words.append(word)
         return words
+    
     '''
     bool function whether string is uuid
     '''
     def is_uuid(string):
         parts = string.split('-')
         return len(parts) == 5 and all(len(part) in (8, 4, 4, 4, 12) and part.isalnum() for part in parts)
+    
     '''
     analyze first argumentand determine source type
     '''
