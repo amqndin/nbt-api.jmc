@@ -1,6 +1,9 @@
 
 JMC.python(`
 class nbt:
+    '''
+    split a string into array of words, ignores spaces in any bracket
+    '''
     def split_into_words(input_string):
         brackets = {
             '(': ')',
@@ -23,9 +26,17 @@ class nbt:
         if word:
             words.append(word)
         return words
-
+    '''
+    bool function whether string is uuid
+    '''
+    def is_uuid(string):
+        parts = string.split('-')
+        return len(parts) == 5 and all(len(part) in (8, 4, 4, 4, 12) and part.isalnum() for part in parts)
+    '''
+    analyze first argumentand determine source type
+    '''
     def get_source_type_and_source(words):
-        if words[0].startswith("@"):
+        if words[0].startswith("@") or nbt.is_uuid(words[0]):
             source_type = "entity"
         elif words[0][0] in "~^" or words[0].isnumeric() or words[0].isnumeric():
             source_type = "block"
@@ -44,13 +55,13 @@ class nbt:
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        return f'data get {source_type} {source} {path}'
+        return f'''data get {source_type} {source} {path}'''
 
     def merge(syntax):
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         nbt_data = words.pop(0) if words else ""
-        return f'data merge {source_type} {source} {nbt_data}'
+        return f'''data merge {source_type} {source} {nbt_data}'''
 
     def modify(syntax):
         words = nbt.split_into_words(syntax)
@@ -105,20 +116,20 @@ class nbt:
             value = words.pop(0)
             value += " "
 
-        return f'data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}'
+        return f'''data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}'''.strip()
 
     def remove(syntax):
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        return f'data remove {source_type} {source} {path}'
+        return f'''data remove {source_type} {source} {path}'''
 
     def shift_array(syntax):
         words = nbt.split_into_words(syntax)
         source_type, source, words = nbt.get_source_type_and_source(words)
         path = words.pop(0) if words else ""
-        return f'''\r\ndata modify {source_type} {source} {path} append from {source_type} {source} {path}[0]\r\ndata remove {source_type} {source} {path}[0]'''
-        
+        return f'''data modify {source_type} {source} {path} append from {source_type} {source} {path}[0]\r\ndata remove {source_type} {source} {path}[0]'''
+
 
 `, "amandin:nbt_api");
 
