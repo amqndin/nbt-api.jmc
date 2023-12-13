@@ -45,6 +45,9 @@ function examples() {
     Nbt.remove("0 0 0 Items[1]");
     // data remove block 0 0 0 Items[1]
 
+    Nbt.modify('@s ArmorItems[0].tag set {display:{color:16711680}}');
+    // data modify entity @s ArmorItems[0].tag set value {display:{color:16711680}}
+
     Nbt.get("f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count");
     // data get entity f81d4fae-7dec-11d0-a765-00a0c91e6bf6 SelectedItem.Count
 
