@@ -25,14 +25,7 @@ class Nbt:
     def tokenize(syntax) -> dict:
         words = Nbt.split_into_words(syntax)
         index = 0
-        tokens = {
-            '1': {"type": "", "source": "", "path": ""},
-            '2': {"type": "", "source": "", "path": ""},
-            'action': '',
-            'start': '',
-            'end': '',
-            'value': ''
-        }
+        tokens = {'1': {"type": "", "source": "", "path": ""},'2': {"type": "", "source": "", "path": ""},'action': '','start': '','end': '','value': ''} # define all tokens
         # tokenize first nbt object
         if words[index].startswith("@") or Nbt.is_uuid(words[index]):
             tokens["1"]["type"] = "entity"
@@ -84,8 +77,7 @@ class Nbt:
             return tokens
         
         # tokenize 'index, start, end'
-        tokens['start'] = words[index]
-        tokens['end'] = words[index+1]
+        tokens['start'], tokens['end'] = words[index], words[index+1]
 
         return tokens 
     
