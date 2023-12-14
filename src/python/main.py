@@ -22,7 +22,7 @@ class Nbt:
             words.append(word)
         return words
 
-    def tokenize(syntax) -> dict:
+    def tokenizer(syntax) -> dict:
         words = Nbt.split_into_words(syntax)
         index = 0
         tokens = {'1': {"type": "", "source": "", "path": ""},'2': {"type": "", "source": "", "path": ""},'action': '','start': '','end': '','value': ''} # define all tokens
@@ -86,21 +86,21 @@ class Nbt:
         return len(parts) == 5 and all(len(part) in (8, 4, 4, 4, 12) and part.isalnum() for part in parts)
 
     def get(syntax: str) -> str:
-        tokens = Nbt.tokenize(syntax)
+        tokens = Nbt.tokenizer(syntax)
         return f'''data get {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}'''
 
     def merge(syntax: str) -> str:
-        tokens = Nbt.tokenize(syntax)
+        tokens = Nbt.tokenizer(syntax)
         return f'''data merge {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}'''
 
     def remove(syntax: str) -> str:
-        tokens = Nbt.tokenize(syntax)
+        tokens = Nbt.tokenizer(syntax)
         return f'''data remove {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}'''
 
     def shift_array(syntax: str) -> str:
-        tokens = Nbt.tokenize(syntax)
+        tokens = Nbt.tokenizer(syntax)
         return f'''data modify {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']} append from {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}[0]\r\ndata remove {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}[0]'''
 
     def modify(syntax: str) -> str:
-        tokens = Nbt.tokenize(syntax)
+        tokens = Nbt.tokenizer(syntax)
         return f'''data modify {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']} {tokens["action"]} {tokens['value']}{tokens['2']['type']} {tokens['2']['source']} {tokens['2']['path']} {tokens['start']} {tokens['end']}'''.strip()

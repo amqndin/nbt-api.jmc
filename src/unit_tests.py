@@ -3,7 +3,6 @@ from python.main import *
 correct = [
     'data get block ~ ~ ~ Items',
     'data merge entity @s {NoAI:1b,Invulnerable:1b}',
-    'data merge entity @s {NoAI:1b,Invulnerable:1b}',
     'data modify storage main some.tag set value 1b',
     'data modify storage main some.tag.array append value 1b',
     'data modify storage main array append from storage temp tempArray[0]',
@@ -23,7 +22,6 @@ def test_all():
     test_result = []
     test_result += [
         Nbt.get("~ ~ ~ Items"),
-        Nbt.merge("@s {NoAI:1b, Invulnerable:1b}"),
         Nbt.merge("@s {NoAI:1b, Invulnerable:1b}"),
         Nbt.modify("main some.tag set 1b"),
         Nbt.modify("main some.tag.array append 1b"),

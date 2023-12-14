@@ -1,10 +1,8 @@
-
+// NBT Api v1.0.1
+// Made by amandin
 JMC.python(`
-class nbt:
-    '''
-    split a string into array of words, ignores spaces in any bracket
-    '''
-    def split_into_words(input_string):
+class Nbt: 
+    def split_into_words(input_string: str) -> list:
         brackets = {
             '(': ')',
             '[': ']',
@@ -13,7 +11,7 @@ class nbt:
         }
         words, word = [], ''
         inside = ''
-        for index, char in enumerate(input_string):
+        for char in input_string:
             if char != " ":
                 if char in brackets and inside == '':
                     inside = char
@@ -26,109 +24,89 @@ class nbt:
         if word:
             words.append(word)
         return words
-    '''
-    bool function whether string is uuid
-    '''
-    def is_uuid(string):
+
+    def tokenizer(syntax) -> dict:
+        words = Nbt.split_into_words(syntax)
+        index = 0
+        tokens = {'1': {"type": "", "source": "", "path": ""},'2': {"type": "", "source": "", "path": ""},'action': '','start': '','end': '','value': ''} # define all tokens
+        # tokenize first nbt object
+        if words[index].startswith("@") or Nbt.is_uuid(words[index]):
+            tokens["1"]["type"] = "entity"
+            tokens["1"]["source"] = words[index]
+        elif any(word[0] in "~^" or word.isnumeric() for word in words[:3]):
+            tokens["1"]["type"] = "block"
+            tokens["1"]["source"] = " ".join(words[:3])
+        else:
+            tokens["1"]["type"] = "storage"
+            tokens["1"]["source"] = words[index] 
+        if tokens["1"]["type"] == "block": index += 3
+        else: index += 1
+        tokens["1"]["path"] = words[index]
+        if words[index] == words[-1]: return tokens
+
+        index += 1 
+
+        # tokenize actions and corresponding value
+        if words[index] in ["set", "append", "prepend", "insert", "merge"]:
+            if words[index] == 'insert' and words[index+1].isnumeric():
+                tokens['action'] = 'insert ' + words[index+1] + " " + words[index+2]
+            elif words[index+1] in ['from', 'string']:
+                tokens["action"] = " ".join(words[index:index+2])
+            else:
+                tokens["action"] = words[index] + " value"
+                tokens["value"] = words[index+1]
+                return tokens
+        
+        index += 2
+
+        # tokenize second nbt object
+        if words[index].startswith("@") or Nbt.is_uuid(words[index]):
+            tokens["2"]["type"] = "entity"
+            tokens["2"]["source"] = words[index]
+        elif any(word[0] in "~^" or word.isnumeric() for word in words[index:index+2]):
+            tokens["2"]["type"] = "block"
+            tokens["2"]["source"] = " ".join(words[index:index+3])
+        else:
+            tokens["2"]["type"] = "storage"
+            tokens["2"]["source"] = words[index] 
+        if tokens["2"]["type"] == "block": index += 3
+        else: index += 1
+        tokens["2"]["path"] = words[index]
+        if words[index] == words[-1]: return tokens
+        
+        index += 1
+
+        if "string" not in tokens['action']:
+            return tokens
+        
+        # tokenize 'index, start, end'
+        tokens['start'], tokens['end'] = words[index], words[index+1]
+
+        return tokens 
+    
+    def is_uuid(string: str) -> bool:
         parts = string.split('-')
         return len(parts) == 5 and all(len(part) in (8, 4, 4, 4, 12) and part.isalnum() for part in parts)
-    '''
-    analyze first argumentand determine source type
-    '''
-    def get_source_type_and_source(words):
-        if words[0].startswith("@") or nbt.is_uuid(words[0]):
-            source_type = "entity"
-        elif words[0][0] in "~^" or words[0].isnumeric() or words[0].isnumeric():
-            source_type = "block"
-        else:
-            source_type = "storage"
-        if source_type == "entity":
-            source = words.pop(0)
-        elif source_type == "block":
-            source = " ".join(words[:3])
-            del words[:3]
-        else:
-            source = words.pop(0)
-        return source_type, source, words
 
-    def get(syntax):
-        words = nbt.split_into_words(syntax)
-        source_type, source, words = nbt.get_source_type_and_source(words)
-        path = words.pop(0) if words else ""
-        return f'''data get {source_type} {source} {path}'''
+    def get(syntax: str) -> str:
+        tokens = Nbt.tokenizer(syntax)
+        return f'''data get {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}'''
 
-    def merge(syntax):
-        words = nbt.split_into_words(syntax)
-        source_type, source, words = nbt.get_source_type_and_source(words)
-        nbt_data = words.pop(0) if words else ""
-        return f'''data merge {source_type} {source} {nbt_data}'''
+    def merge(syntax: str) -> str:
+        tokens = Nbt.tokenizer(syntax)
+        return f'''data merge {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}'''
 
-    def modify(syntax):
-        words = nbt.split_into_words(syntax)
-        source_type, source, words = nbt.get_source_type_and_source(words)
-        path = words.pop(0)
+    def remove(syntax: str) -> str:
+        tokens = Nbt.tokenizer(syntax)
+        return f'''data remove {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}'''
 
-        actions = {
-            "set from": {"action": "set from", "del_words": 2},
-            "set string": {"action": "set string", "del_words": 2},
-            "set": {"action": "set value", "del_words": 1},
-            "append from": {"action": "append from", "del_words": 2},
-            "append string": {"action": "append string", "del_words": 2},
-            "append": {"action": "append value", "del_words": 1},
-            "prepend from": {"action": "prepend from", "del_words": 2},
-            "prepend string": {"action": "prepend string", "del_words": 2},
-            "prepend": {"action": "prepend value", "del_words": 1},
-            "insert from": {"action": "insert from", "del_words": 3},
-            "insert string": {"action": "insert string", "del_words": 3},
-            "insert": {"action": "insert value", "del_words": 2},
-            "merge": {"action": "merge value", "del_words": 1},
-            "merge from": {"action": "merge from", "del_words": 2},
-            "merge string": {"action": "merge string", "del_words": 2}
-        }
+    def shift_array(syntax: str) -> str:
+        tokens = Nbt.tokenizer(syntax)
+        return f'''data modify {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']} append from {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}[0]\r\ndata remove {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']}[0]'''
 
-        action = ""
-        start = ""
-        end = ""
-        index = ""
-
-        for key in actions:
-            if key in syntax:
-                action = actions[key]["action"]
-                del words[:actions[key]["del_words"]]
-                if "insert" in key:
-                    index = words.pop(0)
-                break
-
-        second_source_type = ""
-        second_source = ""
-        second_path = ""
-        if words and action not in ["set value", "append value", "prepend value", "insert value", "merge value"]:
-            second_source_type, second_source, words = nbt.get_source_type_and_source(words)
-            if words:
-                second_path = words.pop(0)
-
-        if action in ["set string", "append string", "prepend string", "insert string", "merge string"] and words:
-            start = words.pop(0)
-            end = words.pop(0)
-
-        value = ""
-        if action in ["set value", "append value", "prepend value", "insert value", "merge value"] and words:
-            value = words.pop(0)
-            value += " "
-
-        return f'''data modify {source_type} {source} {path} {action} {value}{second_source_type} {second_source} {second_path} {index} {start} {end}'''.strip()
-
-    def remove(syntax):
-        words = nbt.split_into_words(syntax)
-        source_type, source, words = nbt.get_source_type_and_source(words)
-        path = words.pop(0) if words else ""
-        return f'''data remove {source_type} {source} {path}'''
-
-    def shift_array(syntax):
-        words = nbt.split_into_words(syntax)
-        source_type, source, words = nbt.get_source_type_and_source(words)
-        path = words.pop(0) if words else ""
-        return f'''data modify {source_type} {source} {path} append from {source_type} {source} {path}[0]\r\ndata remove {source_type} {source} {path}[0]'''
+    def modify(syntax: str) -> str:
+        tokens = Nbt.tokenizer(syntax)
+        return f'''data modify {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']} {tokens["action"]} {tokens['value']}{tokens['2']['type']} {tokens['2']['source']} {tokens['2']['path']} {tokens['start']} {tokens['end']}'''.strip()
 
 
 `, "amandin:nbt_api");
@@ -138,31 +116,31 @@ class Nbt {
     @lazy
     function get(syntax) {
         JMC.python(`
-emit(nbt.get('$syntax'))
+emit(Nbt.get('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy
     function merge(syntax) {
         JMC.python(`
-emit(nbt.merge('$syntax'))
+emit(Nbt.merge('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy
     function modify(syntax) {
         JMC.python(`
-emit(nbt.modify('$syntax'))
+emit(Nbt.modify('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy
     function remove(syntax) {
         JMC.python(`
-emit(nbt.remove('$syntax'))
+emit(Nbt.remove('$syntax'))
 `, "amandin:nbt_api");
     }
     @lazy 
     function shiftArray(syntax) {
         JMC.python(`
-emit(nbt.shift_array('$syntax'))
+emit(Nbt.shift_array('$syntax'))
 `, "amandin:nbt_api");
     }
 }
