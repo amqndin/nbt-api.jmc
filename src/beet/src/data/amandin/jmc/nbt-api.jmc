@@ -1,4 +1,4 @@
-// NBT Api v1.0.1
+// NBT Api v1.0.2
 // Made by amandin
 JMC.python(`
 class Nbt: 

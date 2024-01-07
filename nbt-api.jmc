@@ -1,4 +1,4 @@
-// NBT Api v1.0.1
+// NBT Api v1.0.2
 // Made by amandin
 JMC.python(`
 class Nbt: 
@@ -116,31 +116,31 @@ class Nbt {
     @lazy
     function get(syntax) {
         JMC.python(`
-emit(Nbt.get('$syntax'))
+emit(Nbt.get($syntax))
 `, "amandin:nbt_api");
     }
     @lazy
     function merge(syntax) {
         JMC.python(`
-emit(Nbt.merge('$syntax'))
+emit(Nbt.merge($syntax))
 `, "amandin:nbt_api");
     }
     @lazy
     function modify(syntax) {
         JMC.python(`
-emit(Nbt.modify('$syntax'))
+emit(Nbt.modify($syntax))
 `, "amandin:nbt_api");
     }
     @lazy
     function remove(syntax) {
         JMC.python(`
-emit(Nbt.remove('$syntax'))
+emit(Nbt.remove($syntax))
 `, "amandin:nbt_api");
     }
     @lazy 
     function shiftArray(syntax) {
         JMC.python(`
-emit(Nbt.shift_array('$syntax'))
+emit(Nbt.shift_array($syntax))
 `, "amandin:nbt_api");
     }
 }
