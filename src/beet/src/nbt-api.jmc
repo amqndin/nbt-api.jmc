@@ -1,3 +1,6 @@
+// NBT Api v1.0.2
+// Made by amandin
+JMC.python(`
 def split_into_words(input_string: str) -> list:
     brackets = {
         '(': ')',
@@ -103,3 +106,40 @@ def nbt_shift_array(syntax: str) -> str:
 def nbt_modify(syntax: str) -> str:
     tokens = tokenizer(syntax)
     return f'''data modify {tokens['1']['type']} {tokens['1']['source']} {tokens['1']['path']} {tokens["action"]} {tokens['value']}{tokens['2']['type']} {tokens['2']['source']} {tokens['2']['path']} {tokens['start']} {tokens['end']}'''.strip()
+`, "amandin:nbt_api");
+
+
+class Nbt {
+    @lazy
+    function get(syntax) {
+        JMC.python(`
+emit(nbt_get($syntax))
+`, "amandin:nbt_api");
+    }
+    @lazy
+    function merge(syntax) {
+        JMC.python(`
+emit(nbt_merge($syntax))
+`, "amandin:nbt_api");
+    }
+    @lazy
+    function modify(syntax) {
+        JMC.python(`
+emit(nbt_modify($syntax))
+`, "amandin:nbt_api");
+    }
+    @lazy
+    function remove(syntax) {
+        JMC.python(`
+emit(nbt_remove($syntax))
+`, "amandin:nbt_api");
+    }
+    @lazy 
+    function shiftArray(syntax) {
+        JMC.python(`
+emit(nbt_shift_array($syntax))
+`, "amandin:nbt_api");
+    }
+}
+
+

@@ -13,6 +13,6 @@ pipeline:
 meta:
     jmc:
         namespace: jmc
-        file: src/data/amandin/jmc/main.jmc
+        file: ./src/main.jmc
     bolt:
         entrypoint: amandin:main
