@@ -1,0 +1,5 @@
+import "nbt-api";
+import "./src/backend/*";
+
+examples();
+

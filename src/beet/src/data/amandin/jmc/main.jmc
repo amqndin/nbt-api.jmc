@@ -1,5 +1,0 @@
-import "nbt-api";
-import "src/data/amandin/jmc/backend/*";
-
-examples();
-
