@@ -1,3 +1,6 @@
+# arvhived 3/5/2024
+no longer needed since a51e32a commit in official jmc repo (WingedSeal/jmc)
+
 # A better way to interact with nbt in jmc.
 
 generate _any_ `data` command with a fancy syntax.
